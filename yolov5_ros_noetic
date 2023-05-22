@@ -1,0 +1,60 @@
+# yolov5_ros 가져오기
+
+cd <ros_workspace>/src
+
+git clone https://github.com/mats-robotics/detection_msgs.git
+git clone --recurse-submodules https://github.com/mats-robotics/yolov5_ros.git 
+cd yolov5_ros/src/yolov5
+pip install -r requirements.txt # install the requirements for yolov5
+pip install pandas seaborn
+
+# yolov5_ros 패키지 생성
+
+cd <ros_workspace>
+catkin build yolov5_ros # build the ROS package
+
+# Python 스크립트 실행 파일로 만들기
+
+cd <ros_workspace>/src/yolov5_ros/src
+chmod +x detect.py
+
+# coco-dataset 다운로드
+
+wget https://github.com/ultralytics/yolov5/releases/download/v4.0/yolov5s.pt
+cp yolov5s.pt ~/catkin_ws/src/yolov5_ros/data
+
+# launch파일 수정
+
+→ input_image_topic 파라미터를 /usb_cam/image_raw/compressed로 변경
+→ weight파일등 파라미터 값 수정
+
+# usb_cam 가져오기
+
+cd <ros_workspace>/src
+git clone https://github.com/ros-drivers/usb_cam.git
+or
+sudo apt-get install ros-noetic-usb-cam
+
+# launch파일 수정
+
+<launch>
+  <arg name="image_view" default="false" />
+
+  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video0" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="usb_cam" />
+    <param name="io_method" value="mmap" />
+      <rosparam command="load" file="$(find usb_cam)/config/usb_cam.yml"/>
+  </node>
+   <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+     <remap from="image" to="/usb_cam/image_raw"/>
+     <param name="autosize" value="true" />
+   </node>
+</launch>
+
+usb_cam 노드 실행 후 yolov5_ros노드 실행하기
+
+
