@@ -28,12 +28,17 @@ cp yolov5s.pt ~/catkin_ws/src/yolov5_ros/data
 → input_image_topic 파라미터를 /usb_cam/image_raw/compressed로 변경
 → weight파일등 파라미터 값 수정
 
+roslaunch yolov5_ros yolov5.launch
+
 # usb_cam 가져오기
 
 cd <ros_workspace>/src
 git clone https://github.com/ros-drivers/usb_cam.git
 or
 sudo apt-get install ros-noetic-usb-cam
+
+roslaunch usb_cam usb_cam-test.launch
+
 
 # launch파일 수정
 
