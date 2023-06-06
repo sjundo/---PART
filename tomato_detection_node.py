@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import String, Int32
 from geometry_msgs.msg import Point
 
 import cv2
@@ -33,6 +33,8 @@ class TomatoDetectionNode(Node):
 
         # 토마토 좌표 발행을 위한 Publisher 생성
         self.tomato_pub = self.create_publisher(Point, 'tomato_coordinates', 10)
+        # ID 발행을 위한 Publisher 생성
+        self.id_pub = self.create_publisher(Int32, 'tomato_id', 10)
 
         # 토마토 개수 초기화
         self.tomato_count = 0
@@ -87,6 +89,11 @@ class TomatoDetectionNode(Node):
                 tomato_coordinates.z = z_cm
                 self.tomato_pub.publish(tomato_coordinates)
 
+                # ID 발행
+                tomato_id = Int32()
+                tomato_id.data = self.tomato_count
+                self.id_pub.publish(tomato_id)
+
 def main(args=None):
     rclpy.init(args=args)
     tomato_detection_node = TomatoDetectionNode()
@@ -96,4 +103,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
