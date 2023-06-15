@@ -31,6 +31,7 @@ class TomatoDetectionNode(Node):
                 continue
             
             color_image = np.asanyarray(color_frame.get_data())
+            color_image1 = np.asanyarray(color_frame.get_data())
             depth_image = np.asanyarray(depth_frame.get_data())
             
             results = self.model(color_image)
@@ -72,7 +73,8 @@ class TomatoDetectionNode(Node):
             origin_x, origin_y = int(color_image.shape[1] / 2), int(color_image.shape[0] / 2)
             cv2.circle(color_image, (origin_x, origin_y), 5, (255, 0, 0), -1)
     
-            cv2.imshow('Webcam', color_image)
+            cv2.imshow('detect_Camera', color_image)
+            cv2.imshow('raw_Camera', color_image1)
     
             if cv2.waitKey(1) == ord('q'):
                 break
