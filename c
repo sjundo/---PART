@@ -73,9 +73,9 @@ class TomatoPublisher(Node):
                 point_in_3D = np.dot(np.linalg.inv(self.camera_matrix), point_3D)[:3] * depth_in_meters
 
                 # 좌표계 변환
-                x_cm = point_in_3D[2] * 100  # z축을 위로 올리고, 단위를 cm로 변환
-                y_cm = -point_in_3D[0] * 100  # x축을 전방으로 옮기고, 부호를 반대로 하여 왼쪽 방향으로 변환
-                z_cm = -point_in_3D[1] * 100  # y축을 원점에서 왼쪽 방향으로 옮기고, 부호를 반대로 하여 변환
+                x_cm = point_in_3D[2] * 1000  # z축을 위로 올리고, 단위를 mm로 변환
+                y_cm = -point_in_3D[0] * 1000  # x축을 전방으로 옮기고, 부호를 반대로 하여 왼쪽 방향으로 변환
+                z_cm = -point_in_3D[1] * 1000  # y축을 원점에서 왼쪽 방향으로 옮기고, 부호를 반대로 하여 변환
 
                 # 토마토 개수에 따라 ID 할당
                 tomato_count += 1
